@@ -325,6 +325,8 @@
           
           <li><a class="qs-a" onclick="changeQuickStart('qs-sschizas-msgpack-response',this)">Node <span class="qs-sub">sschizas</span></a></li>
           
+          <li><a class="qs-a" onclick="changeQuickStart('qs-couchdeveloper-messagepack',this)">Swift <span class="qs-sub">couchdeveloper</span></a></li>
+          
           <li><a class="qs-a" onclick="changeQuickStart('qs-crowding-msgpack-r',this)">R <span class="qs-sub">crowding</span></a></li>
           
           <li><a class="qs-a" onclick="changeQuickStart('qs-komamitsu-retrofit-converter-msgpack',this)">Retrofit converter (Java) <span class="qs-sub">komamitsu</span></a></li>
@@ -336,6 +338,8 @@
           <li><a class="qs-a" onclick="changeQuickStart('qs-lekma-mood-msgpack',this)">Python <span class="qs-sub">lekma</span></a></li>
           
           <li><a class="qs-a" onclick="changeQuickStart('qs-dchenk-msgp',this)">Go <span class="qs-sub">dchenk</span></a></li>
+          
+          <li><a class="qs-a" onclick="changeQuickStart('qs-cherrywoods-swift-msgpack-serialization',this)">Swift, java compatibel <span class="qs-sub">cherrywoods</span></a></li>
           
           <li><a class="qs-a" onclick="changeQuickStart('qs-bastibe-matlab-msgpack',this)">Matlab <span class="qs-sub">bastibe</span></a></li>
           
@@ -363,7 +367,17 @@
           
           <li><a class="qs-a" onclick="changeQuickStart('qs-tris-code-messagepack',this)">Swift <span class="qs-sub">tris-code</span></a></li>
           
+          <li><a class="qs-a" onclick="changeQuickStart('qs-mikeloomisgg-cppack',this)">C++17 <span class="qs-sub">mikeloomisgg</span></a></li>
+          
+          <li><a class="qs-a" onclick="changeQuickStart('qs-CodeSmith32-msgpack-js-micro',this)">JavaScript <span class="qs-sub">CodeSmith32</span></a></li>
+          
+          <li><a class="qs-a" onclick="changeQuickStart('qs-CodeSmith32-msgpack-php-micro',this)">PHP <span class="qs-sub">CodeSmith32</span></a></li>
+          
           <li><a class="qs-a" onclick="changeQuickStart('qs-xtpor-godot-msgpack',this)">GDScript <span class="qs-sub">xtpor</span></a></li>
+          
+          <li><a class="qs-a" onclick="changeQuickStart('qs-highras-msgpack-csharp',this)">C# <span class="qs-sub">highras</span></a></li>
+          
+          <li><a class="qs-a" onclick="changeQuickStart('qs-tihannalouise-https-github-com-msgpack-msgpack-java',this)">expert-carnival <span class="qs-sub">tihannalouise</span></a></li>
           
           <li><a class="qs-a" onclick="changeQuickStart('qs-hideakitai-MsgPack',this)">Arduino <span class="qs-sub">hideakitai</span></a></li>
           
@@ -9238,6 +9252,64 @@ msgpack-response is available under the MIT license. See the LICENSE file for mo
   
         </div>
         
+        <div id="qs-couchdeveloper-messagepack" class="qs"><h4><a href="https://github.com/couchdeveloper/messagepack" target="_blank">couchdeveloper/messagepack <span class="qs-url">https://github.com/couchdeveloper/messagepack</span></a></h4>
+
+    MessagePack
+MessagePack is an efficient binary serialization format. It lets you exchange data among multiple languages like JSON. But it's faster and smaller. Small integers are encoded into a single byte, and typical short strings require only one extra byte in addition to the strings themselves.
+Package.swift
+.Package(url: "https://github.com/tris-foundation/messagepack.git", majorVersion: 0)
+Memo
+public enum MessagePack {
+    case `nil`
+    case int(Int)
+    case uint(UInt)
+    case bool(Bool)
+    case float(Float)
+    case double(Double)
+    case string(String)
+    case binary([UInt8])
+    case array([MessagePack])
+    case map([MessagePack : MessagePack])
+    case extended(Extended)
+
+    public struct Extended {
+        public let type: Int8
+        public let data: [UInt8]
+        public init(type: Int8, data: [UInt8]) {
+            self.type = type
+            self.data = data
+        }
+    }
+}
+Usage
+You can find this code and more in examples.
+Convenience API
+let hey = MessagePack("hey there!")
+let bytes = MessagePack.encode(hey)
+let original = String(try MessagePack.decode(bytes: bytes))
+Performance optimized
+var encoder = Encoder()
+encoder.encode(.string("one"))
+encoder.encode(.int(2))
+encoder.encode(.double(3.0))
+let encoded = encoder.bytes
+// be careful, we use raw pointer here
+var decoder = Decoder(bytes: encoded, count: encoded.count)
+// throws on invalid data
+let value = try decoder.decode()
+// reuse decoder
+decoder.rewind()
+// you can avoid extra MessagePack object 
+// if you sure about the structure
+// throws on wrong type
+let string = try decoder.decode(String.self)
+let int = try decoder.decode(UInt8.self)
+let double = try decoder.decode(Double.self)
+print("decoded manually: \(string), \(int), \(double)")
+
+  
+        </div>
+        
         <div id="qs-crowding-msgpack-r" class="qs"><h4><a href="https://github.com/crowding/msgpack-r" target="_blank">crowding/msgpack-r <span class="qs-url">https://github.com/crowding/msgpack-r</span></a></h4>
 
     msgpack for R
@@ -9681,6 +9753,24 @@ simply with the built-in string().
 This codebase is thoroughly refactored to be more Go-idiomatic and efficient.
 
 You're welcome to contribute!
+
+  
+        </div>
+        
+        <div id="qs-cherrywoods-swift-msgpack-serialization" class="qs"><h4><a href="https://github.com/cherrywoods/swift-msgpack-serialization" target="_blank">cherrywoods/swift-msgpack-serialization <span class="qs-url">https://github.com/cherrywoods/swift-msgpack-serialization</span></a></h4>
+
+    swift-msgpack-serialization
+
+Another swift serialization library for msgpack with support for the Codable environement.
+This framework is designed to be (optionaly) compatibel to the msgpack-java library.
+See Compatibility.md for more detailed information about this.
+Please make sure, that the swift model classes and java model classes you use are compatibel to each other, e.g. enums are named equaly (including case).
+This framework also supplies the possibiliy to encode keys of other types than String (generalContainer function of MsgpackEncoder).
+swift-msgpack-serialization works with MessagePack.swift. This means, that you can encode your classes, structs and enums, that conform to Codable to MessagePackValue from MessagePack.swift, do something with this MessagePackValue and then encode it to msgpack using MessagePack.swift. You may of course also decode to MessagePackValue first and then decode a particular MessagePackValue to your own type.
+Instalation
+Currently, only carthage is supported.
+Compatibilty restrictions
+Make sure you never call .encode(to:) directly! Instead use the encode method on a keyed, unkeyed or singleValue container or cast the encoder passed to you to MsgpackEncoder and call encodeIntermediate(_) on this encoder. If you do not use this, this framework won't be able to do it's work properly.
 
   
         </div>
@@ -11041,6 +11131,244 @@ print("decoded manually: \(string), \(int), \(double)")
   
         </div>
         
+        <div id="qs-mikeloomisgg-cppack" class="qs"><h4><a href="https://github.com/mikeloomisgg/cppack" target="_blank">mikeloomisgg/cppack <span class="qs-url">https://github.com/mikeloomisgg/cppack</span></a></h4>
+
+    
+cppack
+A modern (c++17 required) implementation of the msgpack spec.
+Msgpack is a binary serialization specification. It allows you to save and load application objects like classes and structs over networks, to files, and between programs and even different languages.
+Check out this blog for my rational creating this library.
+Features
+
+Fast and compact
+Full test coverage
+Easy to use
+Automatic type handling
+Open source MIT license
+Easy error handling
+
+Single Header only template library
+Want to use this library? Just #include the header and you're good to go. Its less than 1000 lines of code.
+Cereal style packaging
+Easily pack objects into byte arrays using a pack free function:
+struct Person {
+  std::string name;
+  uint16_t age;
+  std::vector<std::string> aliases;
+
+  template<class T>
+  void msgpack(T &pack) {
+    pack(name, age, aliases);
+  }
+};
+
+int main() {
+    auto person = Person{"John", 22, {"Ripper", "Silverhand"}};
+
+    auto data = msgpack::pack(person); // Pack your object
+    auto john = msgpack::unpack<Person>(data.data()); // Unpack it
+}
+More Examples
+Roadmap
+
+Support for extension types
+
+The msgpack spec allows for additional types to be enumerated as Extensions. If reasonable use cases come about for this feature then it may be added.
+
+
+Name/value pairs
+
+The msgpack spec uses the 'map' type differently than this library. This library implements maps in which key/value pairs must all have the same value types.
+
+
+Endian conversion shortcuts
+
+On platforms that already hold types in big endian, the serialization could be optimized using type traits.
+
+
+
+
+  
+        </div>
+        
+        <div id="qs-CodeSmith32-msgpack-js-micro" class="qs"><h4><a href="https://github.com/CodeSmith32/msgpack-js-micro" target="_blank">CodeSmith32/msgpack-js-micro <span class="qs-url">https://github.com/CodeSmith32/msgpack-js-micro</span></a></h4>
+
+    msgpack-js-micro
+msgpack - A fast, lightweight, and extremely compatible JS implementation of the msgpack data encoding format.
+This is a simple, small, and very portable Javascript implementation of msgpack. Runs on browsers (back as far as IE5) as well as Node.js.
+Notice: This implementation is still fairly new, and may have bugs. If you find any bugs, please report them immediately, and I will try to get them fixed as soon as possible.
+Browser:
+<script type="text/javascript" src="msgpack.min.js"></script>
+<script type="text/javascript">
+var obj = {
+  "hello": "world",
+  utf8: "\udead\ubeef", // strings are utf8-encoded by default
+  37: 79.995,
+  ar: [1, 2, 3],
+  buffer: Uint8Array([1,2,3]), // uses msgpack's binary format
+  date: new Date(2019,1,1), // Date instances use msgpack's Timestamp extension format
+  bigint: 31415926535897932384n, // large enough BigInts will be encoded as 64bit ints
+};
+
+// use msgpack directly:
+
+var encoded = msgpack.encode(obj);
+
+var decoded = msgpack.decode(encoded);
+
+console.log(decoded);
+
+// or create msgpack instances:
+
+var myMsgPack = new msgpack(
+  {returnType: "arraybuffer"},
+  {binaryType: "arraybuffer"}
+);
+
+encoded = myMsgPack.encode(obj);
+
+decoded = myMsgPack.decode(obj);
+
+console.log(decoded);
+
+</script>
+
+Node.js:
+const msgpack = require("./msgpack.min.js");
+
+var obj = {
+  "hello": "world",
+  utf8: "\udead\ubeef", // strings are utf8-encoded by default
+  37: 79.995,
+  ar: [1, 2, 3],
+  buffer: Uint8Array([1,2,3]), // uses msgpack's binary format
+  date: new Date(2019,1,1), // Date instances use msgpack's Timestamp extension format
+  bigint: 31415926535897932384n, // large enough BigInts will be encoded as 64bit ints
+};
+
+// use msgpack directly:
+
+var encoded = msgpack.encode(obj);
+
+var decoded = msgpack.decode(encoded);
+
+console.log(decoded);
+
+// or create msgpack instances:
+
+var myMsgPack = new msgpack(
+  {returnType: "arraybuffer"},
+  {binaryType: "arraybuffer"}
+);
+
+encoded = myMsgPack.encode(obj);
+
+decoded = myMsgPack.decode(obj);
+
+console.log(decoded);
+
+Fully supports custom type extensions:
+// Sample "BigInt" type extension
+
+msgpack.extend({
+  type: 1, // msgpack code
+
+  varType: "bigint", // watch value-type
+
+  encode(n) { // encoder (return `false` to skip; see reference for details)
+    var final = n < 0n ? -1n : 0n,
+      c = 0n, str = "";
+
+    while(n !== final) {
+      c = n & 255n;
+      str += String.fromCharCode(Number(c));
+      n >>= 8n;
+    }
+    // add another digit if the high bit doesn't indicate the sign:
+    if((c & 0x80n) !== (final & 0x80n))
+      str += String.fromCharCode(Number(final & 255n));
+
+    return str;
+  },
+
+  decode(s) { // decoder
+    var n = 0n, c = 0n;
+
+    for(var i=0n; i<s.length;i++) {
+      c = BigInt(s.charCodeAt(Number(i)));
+      n |= c << i*8n;
+    }
+    if(c & 0x80n) n |= -1n << BigInt(s.length)*8n;
+
+    return n;
+  }
+});
+
+Visit github.com/CodeSmith32/msgpack-js-micro for the usage reference.
+
+  
+        </div>
+        
+        <div id="qs-CodeSmith32-msgpack-php-micro" class="qs"><h4><a href="https://github.com/CodeSmith32/msgpack-php-micro" target="_blank">CodeSmith32/msgpack-php-micro <span class="qs-url">https://github.com/CodeSmith32/msgpack-php-micro</span></a></h4>
+
+    msgpack-php-micro
+msgpack - A super-lightweight PHP implementation of the msgpack data encoding format.
+This is a very simple, small PHP implementation of msgpack, for ease of embedding.
+Notice: This implementation is still fairly new, and may have bugs. If you find any bugs, please report them immediately, and I will try to get them fixed as soon as possible.
+Usage:
+require_once('msgpack.php');
+
+$data = array(
+  'hello' => 'world',
+  'array' => array(1, 2, 3, 4),
+  5 => 78.662,
+  'dt' => new DateTime(), // DateTime encoded in Timestamp extension format
+);
+
+$encoded = MsgPack::encode($data);
+
+$decoded = MsgPack::decode($encoded);
+
+var_dump($decoded);
+
+Fully supports custom type extensions:
+require_once('msgpack.php');
+
+class Vertex {
+	public $x;
+	public $y;
+	public $z;
+
+	public function __construct($x=0, $y=0, $z=0) {
+		$this->x = floatval($x);
+		$this->y = floatval($y);
+		$this->z = floatval($z);
+	}
+}
+
+MsgPack::extend(array(
+	'type' => 1,
+
+	'varType' => 'object',
+
+	'encode' => function($obj) {
+		// returning FALSE skips; see reference for details
+		if(!($obj instanceof Vertex)) return FALSE;
+
+		return pack('GGG',$obj->x, $obj->y, $obj->z);
+	},
+
+	'decode' => function($data) {
+		$xyz = unpack('Gx/Gy/Gz',$data);
+		return new Vertex($xyz['x'], $xyz['y'], $xyz['z']);
+	},
+));
+
+Visit github.com/CodeSmith32/msgpack-php-micro for the usage reference.
+
+  
+        </div>
+        
         <div id="qs-xtpor-godot-msgpack" class="qs"><h4><a href="https://github.com/xtpor/godot-msgpack" target="_blank">xtpor/godot-msgpack <span class="qs-url">https://github.com/xtpor/godot-msgpack</span></a></h4>
 
     godot-msgpack
@@ -11082,6 +11410,70 @@ Slow compare to the built-in binary serialization in godot
 Testcases
 godot -s run_test.gd
 
+
+  
+        </div>
+        
+        <div id="qs-highras-msgpack-csharp" class="qs"><h4><a href="https://github.com/highras/msgpack-csharp" target="_blank">highras/msgpack-csharp <span class="qs-url">https://github.com/highras/msgpack-csharp</span></a></h4>
+
+    FPNN MsgPack Implement
+
+msgpack SPEC
+Project Home
+
+Compatibility Version:
+C# .Net Standard 2.0
+For Packer:
+
+
+input kinds:
+null, bool, sbyte, byte, short, ushort, Int32, UInt32, Int64, Uint64, float, double, string
+Decimal, Tuple
+byte[], DateTime, IEnumerable (such as List, Dictionary, List<object>, Dictionary<object, object>, ...)
+
+
+usage:
+  using com.fpnn.msgpack;
+  void MsgPacker.Pack(Stream stream, Object obj);
+
+
+
+For Unpacker:
+
+
+output kinds:
+Object, which maybe the following kinds:
+null, bool, sbyte, byte, short, ushort, Int32, UInt32, Int64, Uint64, float, double, string
+byte[], DateTime, List<object>, Dictionary<object, object>
+
+
+usage:
+  using com.fpnn.msgpack;
+  Dictionary<Object, Object> MsgUnpacker.Unpack(byte[] binary);
+
+  Dictionary<Object, Object> MsgUnpacker.Unpack(byte[] binary, int offset, int length = 0);
+
+  //-- unpack one object.
+  Object MsgUnpacker.Unpack(byte[] binary, int offset, out int endOffset);
+
+
+
+Exception:
+    using com.fpnn.msgpack;
+    public class MsgPackException: Exception;
+    public class UnsupportedTypeException : MsgPackException;
+    public class UnrecognizedDataException : MsgPackException;
+    public class InsufficientException : MsgPackException;
+    public class InvalidDataException : MsgPackException;
+
+
+  
+        </div>
+        
+        <div id="qs-tihannalouise-https-github-com-msgpack-msgpack-java" class="qs"><h4><a href="https://github.com/tihannalouise/https-github.com-msgpack-msgpack-java" target="_blank">tihannalouise/https-github.com-msgpack-msgpack-java <span class="qs-url">https://github.com/tihannalouise/https-github.com-msgpack-msgpack-java</span></a></h4>
+
+    https-github.com-msgpack-msgpack-java
+msgpack.org[expert-carnival]
 
   
         </div>
